@@ -2,11 +2,14 @@ package com.mrliu.file.strategy;
 
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.vo.FileDeleteVo;
+import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +30,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
              * 获得上传文件的原始文件名称
              */
             String originalFilename = multipartFile.getOriginalFilename();
-            if (originalFilename == null || originalFilename.contains(FILE_SPLIT)) {
+            if (originalFilename == null || !originalFilename.contains(FILE_SPLIT)) {
                 throw new RuntimeException("上传文件名称缺少后缀");
             }
             //封装到一个FileInfoEntity对象
@@ -55,7 +58,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
      * @return 文件实体
      * @Exception IO异常
      */
-    public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws IOException;
+    public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws IOException, ServerException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
 
     @Override
     public boolean delete(List<FileDeleteVo> list) {

@@ -7,7 +7,6 @@ import com.mrliu.file.properties.FileServerProperties;
 import com.mrliu.file.strategy.AbstractFileStrategy;
 import com.mrliu.file.vo.FileDeleteVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
