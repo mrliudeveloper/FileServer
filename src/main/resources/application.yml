@@ -1,25 +1,6 @@
 server:
   port: 8838
 
-file:
-  type: FAST_DFS
-  uriPrefix: http://10.11.24.135:8888/
-
-#FAST_DFS配置
-fdfs:
-  soTimeout: 1500
-  connectTimeout: 600
-  thumb-image:
-    width: 150
-    height: 150
-  tracker-list:
-    - 10.11.24.135:22122
-  pool:
-    #从池中借出的对象的最大数目
-    max-total: 153
-    max-wait-millis: 102
-    jmx-name-base: 1
-    jmx-name-prefix: 1
 spring:
   application:
     name: file-server
@@ -28,5 +9,12 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
+file:
+  type: MINIO
+  minio:
+    bucketName: file-server
+    endpoint: http://localhost:9000/
+    accessKeyId: minioadmin
+    accessKeySecret: minioadmin
 
 

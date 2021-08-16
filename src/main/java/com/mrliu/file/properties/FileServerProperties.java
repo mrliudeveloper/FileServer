@@ -3,14 +3,12 @@ package com.mrliu.file.properties;
 import com.mrliu.file.enumeration.FileStorageType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  *文件策略配置属性类
  * @author Mr.Liu
  */
 @Data
-@Component
 @ConfigurationProperties(prefix = "file")
 public class FileServerProperties {
     /**
