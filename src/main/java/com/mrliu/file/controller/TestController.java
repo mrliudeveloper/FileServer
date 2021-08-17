@@ -34,4 +34,10 @@ public class TestController {
         System.out.println(b);
         return String.valueOf(b);
     }
+
+    @PostMapping("/download")
+    public String download(String id){
+        fileService.deleteFile(id);
+        return "ok";
+    }
 }

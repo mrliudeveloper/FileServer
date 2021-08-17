@@ -1,8 +1,6 @@
 package com.mrliu.file.po;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -13,6 +11,8 @@ import javax.persistence.Table;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "FILE_INFO")
 public class FileInfoEntity extends BaseEntity {
     /**

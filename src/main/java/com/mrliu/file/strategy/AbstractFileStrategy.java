@@ -58,7 +58,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
      * @return 文件实体
      * @Exception IO异常
      */
-    public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws IOException, ServerException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
+    public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws Exception;
 
     @Override
     public boolean delete(List<FileDeleteVo> list) {

@@ -6,6 +6,8 @@ import com.mrliu.file.strategy.AbstractFileStrategy;
 import com.mrliu.file.vo.FileDeleteVo;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
+import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import static com.mrliu.file.constant.FileConstants.FILE_SPLIT;
@@ -40,6 +45,7 @@ public class MinioAutoConfigure {
                     .credentials(minio.getAccessKeyId(), minio.getAccessKeySecret())
                     .build();
         }
+        @SuppressWarnings("All")
         @Override
         public FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) {
             try{
@@ -67,6 +73,16 @@ public class MinioAutoConfigure {
         @Override
         public void deleteFile(FileDeleteVo fileDeleteVo) {
 
+            MinioClient minioClient = buildClient();
+            final RemoveObjectArgs build = RemoveObjectArgs.builder()
+                    .bucket(minio.getBucketName())
+                    .object(fileDeleteVo.getFileName())
+                    .build();
+            try {
+                minioClient.removeObject(build);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

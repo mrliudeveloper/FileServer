@@ -1,7 +1,9 @@
 package com.mrliu.file.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 删除文件条件封装
@@ -9,7 +11,11 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileDeleteVo {
+
+    private String id;
 
     private String group;
 
