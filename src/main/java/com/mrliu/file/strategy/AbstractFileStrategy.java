@@ -41,7 +41,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
                     .fileExt(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))
                     .build();
             //设置时间参数
-//            fileInfo.setCrtTime(new Date());
+            fileInfo.setCrtTime(new Date());
             uploadFile(fileInfo, multipartFile);
             return fileInfo;
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
      * @param fileInfoEntity 文件对象
      * @param multipartFile  文件实体
      * @return 文件实体
-     * @Exception IO异常
+     * @Exception IOException
      */
     public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws Exception;
 

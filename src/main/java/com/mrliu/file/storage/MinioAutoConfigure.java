@@ -29,12 +29,13 @@ import static com.mrliu.file.constant.FileConstants.FILE_SPLIT;
 @Configuration
 @Slf4j
 @EnableConfigurationProperties(FileServerProperties.class)
-@ConditionalOnProperty(name = "file.type",havingValue = "MINIO")
+@ConditionalOnProperty(name = "file.type", havingValue = "MINIO")
 public class MinioAutoConfigure {
     @Resource
     private FileServerProperties properties;
 
     private FileServerProperties.Properties minio;
+
     @Service
     public class MinioServiceImpl extends AbstractFileStrategy {
 
@@ -45,26 +46,27 @@ public class MinioAutoConfigure {
                     .credentials(minio.getAccessKeyId(), minio.getAccessKeySecret())
                     .build();
         }
+
         @SuppressWarnings("All")
         @Override
         public FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) {
-            try{
+            try {
                 final MinioClient minioClient = buildClient();
-                final String fileName = UUID.randomUUID() +FILE_SPLIT+ fileInfoEntity.getFileExt();
+                final String fileName = UUID.randomUUID() + FILE_SPLIT + fileInfoEntity.getFileExt();
                 final String bucketName = minio.getBucketName();
-                if (!minioClient.bucketExists(bucketName)){
+                if (!minioClient.bucketExists(bucketName)) {
                     minioClient.makeBucket(bucketName);
                 }
                 minioClient.putObject(PutObjectArgs.builder()
                         .bucket(bucketName)
                         .object(fileName)
-                        .stream(multipartFile.getInputStream(),multipartFile.getSize(), 1024*1024*100L)
+                        .stream(multipartFile.getInputStream(), multipartFile.getSize(), 1024 * 1024 * 100L)
                         .build());
-                String relativePath="";
+                String relativePath = "";
                 fileInfoEntity.setFileName(fileName);
                 fileInfoEntity.setBucketName(bucketName);
                 fileInfoEntity.setRelativePath(relativePath);
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
             return fileInfoEntity;

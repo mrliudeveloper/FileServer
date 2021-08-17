@@ -33,15 +33,16 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void deleteFile(String id) {
+        //删除文件服务器中的文件资源
+        final ArrayList<FileDeleteVo> fileDeleteVos = new ArrayList<>();
         final FileInfoEntity infoEntity = fileinfoMapper.selectByPrimaryKey(id);
         final FileDeleteVo fileDeleteVo = new FileDeleteVo();
         fileDeleteVo.setId(id);
-
-        final ArrayList<FileDeleteVo> fileDeleteVos = new ArrayList<>();
         fileDeleteVo.setFileName(infoEntity.getFileName());
-        fileDeleteVo.setId(id);
         fileDeleteVo.setRelativePath("");
         fileDeleteVos.add(fileDeleteVo);
         fileStrategy.delete(fileDeleteVos);
+        //删除文件关联表
+        fileinfoMapper.deleteByPrimaryKey(id);
     }
 }

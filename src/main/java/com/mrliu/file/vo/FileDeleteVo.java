@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 删除文件条件封装
+ *
  * @author Mr.Liu
  */
 @Data
@@ -21,7 +22,7 @@ public class FileDeleteVo {
 
     private String fileName;
 
-    private  String relativePath;
+    private String relativePath;
 
     private Boolean file;
 }
