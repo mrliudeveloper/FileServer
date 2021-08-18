@@ -2,6 +2,7 @@ package com.mrliu.file.storage;
 
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.properties.FileServerProperties;
 import com.mrliu.file.strategy.AbstractFileStrategy;
@@ -45,6 +46,7 @@ public class FdfsAutoConfigure {
             fileInfoEntity.setFileName(split[split.length - 1]);
             fileInfoEntity.setUrl(fileServerProperties.getUriPrefix() + storePath.getFullPath());
             fileInfoEntity.setRelativePath(storePath.getPath());
+            fileInfoEntity.setFileStorageType(FileStorageType.FAST_DFS);
             return fileInfoEntity;
         }
 

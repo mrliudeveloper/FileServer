@@ -1,5 +1,6 @@
 package com.mrliu.file.storage;
 
+import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.properties.FileServerProperties;
 import com.mrliu.file.strategy.AbstractFileStrategy;
@@ -56,12 +57,14 @@ public class MinioAutoConfigure {
                     minioClient.makeBucket(bucketName);
                 }
                 final String path = getRelativePath();
-                fileInfoEntity.setRelativePath(path);
+                fileInfoEntity.setRelativePath(bucketName+path+fileName);
                 minioClient.putObject(PutObjectArgs.builder()
                         .bucket(bucketName)
                         .object(path + fileName)
                         .stream(multipartFile.getInputStream(), multipartFile.getSize(), 1024 * 1024 * 100L)
                         .build());
+                fileInfoEntity.setUrl(bucketName+path+fileName);
+                fileInfoEntity.setFileStorageType(FileStorageType.MINIO);
                 fileInfoEntity.setFileName(fileName);
                 fileInfoEntity.setBucketName(bucketName);
             } catch (Exception e) {
