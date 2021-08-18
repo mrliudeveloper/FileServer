@@ -1,9 +1,6 @@
 package com.mrliu.file.controller;
 
-import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.service.FileService;
-import com.mrliu.file.strategy.FileStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +30,11 @@ public class TestController {
         final boolean b = fileService.uploadFile(multipartFile);
         System.out.println(b);
         return String.valueOf(b);
+    }
+
+    @PostMapping("/delete")
+    public String delete(String id){
+        final boolean b =fileService.deleteFile(id);
+        return null;
     }
 }

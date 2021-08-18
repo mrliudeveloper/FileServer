@@ -12,4 +12,11 @@ public interface FileService {
      * @return true/false
      */
     boolean uploadFile(MultipartFile multipartFile);
+
+    /**
+     * 文件删除接口
+     * @param id 文件关联表id
+     * @return true/false
+     */
+    boolean deleteFile(String id);
 }

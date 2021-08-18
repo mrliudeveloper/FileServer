@@ -1,5 +1,6 @@
 package com.mrliu.file.strategy;
 
+import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.vo.FileDeleteVo;
 import io.minio.errors.*;
@@ -37,11 +38,12 @@ public abstract class AbstractFileStrategy implements FileStrategy {
             FileInfoEntity fileInfo = FileInfoEntity.builder()
                     .isDelete(false)
                     .fileSize(multipartFile.getSize())
+                    .fileStorageType(FileStorageType.FAST_DFS)
                     .originalFileName(multipartFile.getOriginalFilename())
                     .fileExt(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))
                     .build();
             //设置时间参数
-//            fileInfo.setCrtTime(new Date());
+            fileInfo.setCrtTime(new Date());
             uploadFile(fileInfo, multipartFile);
             return fileInfo;
         } catch (Exception e) {
@@ -51,14 +53,13 @@ public abstract class AbstractFileStrategy implements FileStrategy {
     }
 
     /**
-     * 文件上传抽象方法，由子类实现
-     *
+     * 文件上传抽象方法
      * @param fileInfoEntity 文件对象
-     * @param multipartFile  文件实体
-     * @return 文件实体
-     * @Exception IO异常
+     * @param multipartFile 文件实体
+     * @return 文件对象
+     * @throws Exception 异常
      */
-    public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws IOException, ServerException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
+    public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws Exception;
 
     @Override
     public boolean delete(List<FileDeleteVo> list) {
