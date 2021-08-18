@@ -1,5 +1,6 @@
 package com.mrliu.file.strategy;
 
+import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.vo.FileDeleteVo;
 import io.minio.errors.*;
@@ -37,6 +38,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
             FileInfoEntity fileInfo = FileInfoEntity.builder()
                     .isDelete(false)
                     .fileSize(multipartFile.getSize())
+                    .fileStorageType(FileStorageType.FAST_DFS)
                     .originalFileName(multipartFile.getOriginalFilename())
                     .fileExt(FilenameUtils.getExtension(multipartFile.getOriginalFilename()))
                     .build();
@@ -51,8 +53,7 @@ public abstract class AbstractFileStrategy implements FileStrategy {
     }
 
     /**
-     * 文件上传抽象方法，由子类实现
-     *
+     * 文件上传抽象方法
      * @param fileInfoEntity 文件对象
      * @param multipartFile  文件实体
      * @return 文件实体

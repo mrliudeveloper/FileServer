@@ -1,7 +1,6 @@
 package com.mrliu.file.po;
-
+import com.mrliu.file.enumeration.FileStorageType;
 import lombok.*;
-
 import javax.persistence.Column;
 import javax.persistence.Table;
 
@@ -10,6 +9,8 @@ import javax.persistence.Table;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,4 +61,7 @@ public class FileInfoEntity extends BaseEntity {
      */
     @Column(name = "URL")
     private String url;
+
+    @Column(name = "FILE_SERVER_TYPE")
+    private FileStorageType  fileStorageType;
 }
