@@ -1,8 +1,6 @@
 package com.mrliu.file.po;
-
 import com.mrliu.file.enumeration.FileStorageType;
 import lombok.*;
-
 import javax.persistence.Column;
 import javax.persistence.Table;
 
@@ -14,6 +12,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "FILE_INFO")
 public class FileInfoEntity extends BaseEntity {
     /**

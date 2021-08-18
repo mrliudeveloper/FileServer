@@ -16,7 +16,9 @@ public class FileConstants implements Serializable {
     /**
      * 字段常量
      */
-    public static final String FILE_SPLIT=".";
+    public static final String FILE_SPLIT = ".";
+
+    public static final String FOLDER_SPLIT = "/";
 
     private FileConstants() {
         super();

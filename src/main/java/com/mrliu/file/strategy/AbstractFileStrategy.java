@@ -55,9 +55,9 @@ public abstract class AbstractFileStrategy implements FileStrategy {
     /**
      * 文件上传抽象方法
      * @param fileInfoEntity 文件对象
-     * @param multipartFile 文件实体
-     * @return 文件对象
-     * @throws Exception 异常
+     * @param multipartFile  文件实体
+     * @return 文件实体
+     * @Exception IOException
      */
     public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws Exception;
 
