@@ -7,7 +7,6 @@ import com.mrliu.file.vo.FileDeleteVo;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
-import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,9 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import static com.mrliu.file.constant.FileConstants.FILE_SPLIT;
@@ -57,15 +55,15 @@ public class MinioAutoConfigure {
                 if (!minioClient.bucketExists(bucketName)) {
                     minioClient.makeBucket(bucketName);
                 }
+                final String path = getRelativePath();
+                fileInfoEntity.setRelativePath(path);
                 minioClient.putObject(PutObjectArgs.builder()
                         .bucket(bucketName)
-                        .object(fileName)
+                        .object(path + fileName)
                         .stream(multipartFile.getInputStream(), multipartFile.getSize(), 1024 * 1024 * 100L)
                         .build());
-                String relativePath = "";
                 fileInfoEntity.setFileName(fileName);
                 fileInfoEntity.setBucketName(bucketName);
-                fileInfoEntity.setRelativePath(relativePath);
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
@@ -78,7 +76,7 @@ public class MinioAutoConfigure {
             MinioClient minioClient = buildClient();
             final RemoveObjectArgs build = RemoveObjectArgs.builder()
                     .bucket(minio.getBucketName())
-                    .object(fileDeleteVo.getFileName())
+                    .object(fileDeleteVo.getRelativePath() + fileDeleteVo.getFileName())
                     .build();
             try {
                 minioClient.removeObject(build);
@@ -88,4 +86,8 @@ public class MinioAutoConfigure {
         }
     }
 
+    public String getRelativePath() {
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("/yyyy/MM/dd/");
+        return dateFormat.format(new Date());
+    }
 }

@@ -1,10 +1,7 @@
 package com.mrliu.file.controller;
 
-import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.service.FileService;
-import com.mrliu.file.strategy.FileStrategy;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +43,7 @@ public class TestController {
     }
 
     /**
-     * 下载测试接口
+     * 删除测试接口(针删除)
      *
      * @param id 文件id
      * @return ok/error
@@ -59,7 +56,6 @@ public class TestController {
             log.error(e.getMessage());
             return "error";
         }
-
         return "ok";
     }
 }
