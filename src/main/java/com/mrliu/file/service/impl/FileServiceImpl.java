@@ -39,7 +39,7 @@ public class FileServiceImpl implements FileService {
         final FileDeleteVo fileDeleteVo = new FileDeleteVo();
         fileDeleteVo.setId(id);
         fileDeleteVo.setFileName(infoEntity.getFileName());
-        fileDeleteVo.setRelativePath("");
+        fileDeleteVo.setRelativePath(infoEntity.getRelativePath());
         fileDeleteVos.add(fileDeleteVo);
         fileStrategy.delete(fileDeleteVos);
         //删除文件关联表
