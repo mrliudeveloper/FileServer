@@ -1,6 +1,10 @@
 package com.mrliu.file.service;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 /**
  * @author Mr.Liu
@@ -19,5 +23,12 @@ public interface FileService {
      * @return true/false
      */
     boolean deleteFile(String id);
+
+    /**
+     * 单文件直接下载，多文件打包下载
+     * @param response response
+     * @param ids ids
+     */
+    HashMap<String,Object> download(HttpServletResponse response, String[] ids);
 
 }

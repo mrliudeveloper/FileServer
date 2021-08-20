@@ -4,12 +4,15 @@ import com.mrliu.file.service.FileService;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 
 /**
  * @author Mr.Liu
@@ -59,4 +62,25 @@ public class TestController {
         }
         return "ok";
     }
+
+    @GetMapping(value = "/download")
+    public void download(@RequestParam("ids[]")String[] ids, HttpServletResponse response) {
+
+
+        System.out.println(ids[0]);
+        System.out.println(ids[1]);
+        final HashMap<String, Object> download = fileService.download(response, ids);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
