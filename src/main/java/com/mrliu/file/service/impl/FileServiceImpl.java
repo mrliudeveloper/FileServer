@@ -1,10 +1,10 @@
 package com.mrliu.file.service.impl;
 
-import com.mrliu.file.biz.FileBiz;
 import com.mrliu.file.mapper.FileinfoMapper;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.service.FileService;
 import com.mrliu.file.strategy.FileStrategy;
+import com.mrliu.file.utils.FileUtils;
 import com.mrliu.file.vo.FileDeleteVo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,15 +26,19 @@ public class FileServiceImpl implements FileService {
     @Resource
     private FileinfoMapper fileinfoMapper;
     @Resource
-    private FileBiz fileBiz;
+    private FileUtils fileUtils;
 
     @Override
-    public boolean uploadFile(MultipartFile multipartFile) {
+    public FileInfoEntity uploadFile(MultipartFile multipartFile) {
         final FileInfoEntity infoEntity = fileStrategy.upload(multipartFile);
         infoEntity.setId(UUID.randomUUID().toString());
         System.out.println(infoEntity);
         final int i = fileinfoMapper.insertSelective(infoEntity);
-        return i > 0;
+        if (i > 0) {
+            return infoEntity;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -61,7 +65,7 @@ public class FileServiceImpl implements FileService {
                 final FileInfoEntity infoEntity = fileinfoMapper.selectByPrimaryKey(id);
                 fileInfoEntities.add(infoEntity);
             }
-            fileBiz.filterFile(response, fileInfoEntities);
+            fileUtils.downloadFdfsFile(response, fileInfoEntities);
         } catch (IOException e) {
             e.printStackTrace();
 

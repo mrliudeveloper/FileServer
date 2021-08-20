@@ -1,5 +1,6 @@
 package com.mrliu.file.service;
 
+import com.mrliu.file.po.FileInfoEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ public interface FileService {
      * @param multipartFile 文件实体
      * @return true/false
      */
-    boolean uploadFile(MultipartFile multipartFile);
+    FileInfoEntity uploadFile(MultipartFile multipartFile);
 
     /**
      * 文件删除接口

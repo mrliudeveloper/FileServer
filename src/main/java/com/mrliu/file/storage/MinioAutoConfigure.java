@@ -5,9 +5,11 @@ import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.properties.FileServerProperties;
 import com.mrliu.file.strategy.AbstractFileStrategy;
 import com.mrliu.file.vo.FileDeleteVo;
+import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,8 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static com.mrliu.file.constant.FileConstants.FILE_SPLIT;
@@ -87,6 +95,13 @@ public class MinioAutoConfigure {
                 e.printStackTrace();
             }
         }
+
+        @Override
+        public void downloadFile(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities) {
+
+        }
+
+
     }
 
     public String getRelativePath() {

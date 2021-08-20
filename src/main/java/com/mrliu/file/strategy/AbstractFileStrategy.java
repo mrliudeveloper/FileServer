@@ -3,14 +3,12 @@ package com.mrliu.file.strategy;
 import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.vo.FileDeleteVo;
-import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,30 +51,27 @@ public abstract class AbstractFileStrategy implements FileStrategy {
     }
 
     /**
-     * 文件上传抽象方法
+     * 文件上传抽象方法，具体功能有子类实现
      * @param fileInfoEntity 文件对象
-     * @param multipartFile  文件实体
+     * @param multipartFile 文件实体
      * @return 文件实体
-     * @Exception IOException
+     * @throws Exception 异常
      */
     public abstract FileInfoEntity uploadFile(FileInfoEntity fileInfoEntity, MultipartFile multipartFile) throws Exception;
 
     @Override
-    public boolean delete(List<FileDeleteVo> list) {
+    public void delete(List<FileDeleteVo> list) {
         if (list == null || list.isEmpty()) {
-            return true;
+            return;
         }
         //删除操作是否成功的一个标志位
-        boolean flag = false;
         for (FileDeleteVo fileDeleteVo : list) {
             try {
                 deleteFile(fileDeleteVo);
-                flag = true;
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
         }
-        return flag;
     }
 
     /**
@@ -85,4 +80,16 @@ public abstract class AbstractFileStrategy implements FileStrategy {
      * @param fileDeleteVo 删除条件
      */
     public abstract void deleteFile(FileDeleteVo fileDeleteVo);
+
+    @Override
+    public void download(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities) {
+        downloadFile(response,fileInfoEntities);
+    }
+
+    /**
+     * 文件删除抽象方法，由子类实现
+     * @param response 相应对象
+     * @param fileInfoEntities 文件实体
+     */
+    public abstract void downloadFile(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities);
 }

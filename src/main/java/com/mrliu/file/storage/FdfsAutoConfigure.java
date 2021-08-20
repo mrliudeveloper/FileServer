@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Mr.Liu
@@ -54,6 +56,12 @@ public class FdfsAutoConfigure {
         public void deleteFile(FileDeleteVo fileDeleteVo) {
             client.deleteFile(fileDeleteVo.getGroup(), fileDeleteVo.getRelativePath());
         }
+
+        @Override
+        public void downloadFile(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities) {
+
+        }
+
     }
 
 }

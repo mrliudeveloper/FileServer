@@ -1,5 +1,6 @@
 package com.mrliu.file.controller;
 
+import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.service.FileService;
 
 
@@ -41,10 +42,8 @@ public class TestController {
      * @return true/false
      */
     @PostMapping("/upload")
-    public String upload(MultipartFile multipartFile) {
-        final boolean b = fileService.uploadFile(multipartFile);
-        System.out.println(b);
-        return String.valueOf(b);
+    public FileInfoEntity upload(MultipartFile multipartFile) {
+        return fileService.uploadFile(multipartFile);
     }
     /**
      * 删除测试接口(真删除)

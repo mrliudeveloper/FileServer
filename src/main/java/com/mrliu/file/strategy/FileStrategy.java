@@ -4,6 +4,8 @@ import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.vo.FileDeleteVo;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +23,13 @@ public interface FileStrategy {
     /**
      * 删除文件
      * @param fileDeleteVos 删除条件
-     * @return Boolean
      */
-    boolean delete(List<FileDeleteVo> fileDeleteVos);
+    void delete(List<FileDeleteVo> fileDeleteVos);
+
+    /**
+     * 单文件下载，多文件打包下载接口
+     * @param response response
+     * @param fileInfoEntities 文件详细信息
+     */
+    void download(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities);
 }
