@@ -3,11 +3,13 @@ package com.mrliu.file.biz;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.utils.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -24,7 +26,7 @@ public class FileBiz {
     @Resource
     private ZipUtils zipUtils;
 
-    public HashMap<String, Object> filterFile(HttpServletResponse response, ArrayList<FileInfoEntity> fileInfoEntities) throws IOException {
+    public void filterFile(HttpServletResponse response, ArrayList<FileInfoEntity> fileInfoEntities) throws IOException {
 
         final int fileSize = fileInfoEntities.stream().filter((file) -> file != null && !StringUtils.isEmpty(file.getUrl())).mapToInt((file) -> Math.toIntExact(file.getFileSize())).sum();
         String extName = fileInfoEntities.get(0).getOriginalFileName();
@@ -50,10 +52,10 @@ public class FileBiz {
                     map.put(originalFileName, file.getUrl());
                 });
         //压缩文件并下载
-        return getZipAndFileinfo(response, fileSize, extName, map);
+        getZipAndFileinfo(response, fileSize, extName, map);
     }
 
-    private HashMap<String, Object> getZipAndFileinfo(HttpServletResponse response, int fileSize, String extName, Map<String, String> map) throws IOException {
+    private void getZipAndFileinfo(HttpServletResponse response, int fileSize, String extName, Map<String, String> map) throws IOException {
         System.out.println(map);
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-disposition",
@@ -61,6 +63,18 @@ public class FileBiz {
         response.setContentType("application/x-msdownload");
         ArrayList<String> names = new ArrayList<>(map.keySet());
         // 压缩文件的压缩文件输出流
+        if (names.size() > 1) {
+            zipFile(response, map, names);
+        } else {
+            //正常下载单个文件
+            final ServletOutputStream outputStream = response.getOutputStream();
+            byte[] resource = zipUtils.getResource(map.get(names.get(0)));
+            IOUtils.write(resource, outputStream);
+        }
+
+    }
+
+    private void zipFile(HttpServletResponse response, Map<String, String> map, ArrayList<String> names) throws IOException {
         ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
         for (final String name : names) {
             final String url = map.get(name);
@@ -74,10 +88,6 @@ public class FileBiz {
             }
         }
         zipOutputStream.close();
-        final HashMap<String, Object> fileInfo = new HashMap<>(4);
-        fileInfo.put("fileName", extName);
-        fileInfo.put("fileSize", fileSize);
-        return fileInfo;
     }
 
     private static String buildNewFileName(String filename, Integer order) {

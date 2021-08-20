@@ -47,7 +47,7 @@ public class TestController {
         return String.valueOf(b);
     }
     /**
-     * 删除测试接口(针删除)
+     * 删除测试接口(真删除)
      *
      * @param id 文件id
      * @return ok/error
@@ -66,11 +66,8 @@ public class TestController {
     @GetMapping(value = "/download")
     public void download(@RequestParam("ids[]")String[] ids, HttpServletResponse response) {
 
-
         System.out.println(ids[0]);
-        System.out.println(ids[1]);
-        final HashMap<String, Object> download = fileService.download(response, ids);
-
+        fileService.download(response, ids);
     }
 
 

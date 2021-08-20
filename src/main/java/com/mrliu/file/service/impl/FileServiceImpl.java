@@ -13,7 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -28,6 +27,7 @@ public class FileServiceImpl implements FileService {
     private FileinfoMapper fileinfoMapper;
     @Resource
     private FileBiz fileBiz;
+
     @Override
     public boolean uploadFile(MultipartFile multipartFile) {
         final FileInfoEntity infoEntity = fileStrategy.upload(multipartFile);
@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public boolean deleteFile(String id) {
+    public void deleteFile(String id) {
         //删除fdfs文件服务器中的文件资源
         final ArrayList<FileDeleteVo> fileDeleteVos = new ArrayList<>();
         final FileInfoEntity infoEntity = fileinfoMapper.selectByPrimaryKey(id);
@@ -51,21 +51,20 @@ public class FileServiceImpl implements FileService {
         fileStrategy.delete(fileDeleteVos);
         //删除文件关联表
         fileinfoMapper.deleteByPrimaryKey(id);
-        return false;
     }
 
     @Override
-    public HashMap<String, Object> download(HttpServletResponse response, String[] ids) {
+    public void download(HttpServletResponse response, String[] ids) {
         final ArrayList<FileInfoEntity> fileInfoEntities = new ArrayList<>();
         try {
             for (String id : ids) {
                 final FileInfoEntity infoEntity = fileinfoMapper.selectByPrimaryKey(id);
                 fileInfoEntities.add(infoEntity);
             }
-            return fileBiz.filterFile(response, fileInfoEntities);
+            fileBiz.filterFile(response, fileInfoEntities);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+
         }
     }
 }
