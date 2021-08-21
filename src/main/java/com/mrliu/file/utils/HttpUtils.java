@@ -1,8 +1,9 @@
 package com.mrliu.file.utils;
 
-import com.mrliu.file.strategy.FileStrategy;
+import com.mrliu.file.properties.FileServerProperties;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,13 +16,26 @@ import java.net.URL;
 /**
  * @author Mr.Liu
  */
+@Slf4j
 @Component
 public class HttpUtils {
     @Resource
-    private FileStrategy fileStrategy;
+    private FileServerProperties properties;
 
+    private FileServerProperties.Properties minio;
     /**
-     * 获取文件资源
+     * 构建文件客户端对象
+     * @return minio客户端对象
+     */
+    private MinioClient buildClient() {
+        minio = properties.getMinio();
+        return MinioClient.builder()
+                .endpoint(minio.getEndpoint())
+                .credentials(minio.getAccessKeyId(), minio.getAccessKeySecret())
+                .build();
+    }
+    /**
+     * 获取fdfs服务器的文件资源
      *
      * @param path 文件资源的路径
      * @return 文件资源的字节数组
@@ -37,6 +51,27 @@ public class HttpUtils {
         return toByteArray(in);
     }
 
+    /**
+     * 获取minio服务器的输入流
+     * @param path bucketName/ObjectName
+     * @return 文件字节数组
+     */
+    public byte[] getMinioResource(String path){
+
+        int i = path.indexOf("/");
+        String bucketName = path.substring(0, i);
+        String onjectName = path.substring(i + 1);
+        GetObjectArgs args = GetObjectArgs.builder().bucket(bucketName).object(onjectName).build();
+        try {
+            InputStream inputStream = buildClient().getObject(args);
+            return toByteArray(inputStream);
+        }  catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return null;
+        }
+
+    }
 
 
     /**

@@ -95,13 +95,6 @@ public class MinioAutoConfigure {
                 e.printStackTrace();
             }
         }
-
-        @Override
-        public void downloadFile(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities) {
-
-        }
-
-
     }
 
     public String getRelativePath() {

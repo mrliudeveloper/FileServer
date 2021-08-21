@@ -80,16 +80,4 @@ public abstract class AbstractFileStrategy implements FileStrategy {
      * @param fileDeleteVo 删除条件
      */
     public abstract void deleteFile(FileDeleteVo fileDeleteVo);
-
-    @Override
-    public void download(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities) {
-        downloadFile(response,fileInfoEntities);
-    }
-
-    /**
-     * 文件删除抽象方法，由子类实现
-     * @param response 相应对象
-     * @param fileInfoEntities 文件实体
-     */
-    public abstract void downloadFile(HttpServletResponse response, List<FileInfoEntity> fileInfoEntities);
 }

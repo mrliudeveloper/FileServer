@@ -2,18 +2,12 @@ package com.mrliu.file.controller;
 
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.service.FileService;
-
-
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
 
 /**
  * @author Mr.Liu
@@ -42,7 +36,7 @@ public class TestController {
      * @return true/false
      */
     @PostMapping("/upload")
-    public FileInfoEntity upload(MultipartFile multipartFile) {
+    public FileInfoEntity upload(@RequestParam("file") MultipartFile multipartFile) {
         return fileService.uploadFile(multipartFile);
     }
     /**
@@ -68,15 +62,4 @@ public class TestController {
         System.out.println(ids[0]);
         fileService.download(response, ids);
     }
-
-
-
-
-
-
-
-
-
-
-
 }

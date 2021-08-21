@@ -2,6 +2,7 @@ package com.mrliu.file.utils;
 
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.properties.FileServerProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * @author Mr.Liu
  */
+@Slf4j
 @Component
 public class FileUtils {
     @Resource
@@ -29,7 +31,7 @@ public class FileUtils {
     @Resource
     private FileServerProperties properties;
 
-    public void downloadFdfsFile(HttpServletResponse response, ArrayList<FileInfoEntity> fileInfoEntities) throws IOException {
+    public void downloadFile(HttpServletResponse response, ArrayList<FileInfoEntity> fileInfoEntities) throws IOException {
         /*
          * 生成文件名
          */
@@ -57,6 +59,33 @@ public class FileUtils {
         response.setContentType("application/x-msdownload");
     }
 
+    private void zipFile(HttpServletResponse response, Map<String, String> map, ArrayList<String> names) throws IOException {
+        ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+        for (final String name : names) {
+            final String url = map.get(name);
+            final byte[] resource = getFileResource(url);
+            ZipEntry zipEntry = new ZipEntry(name);
+            zipOutputStream.putNextEntry(zipEntry);
+            zipOutputStream.write(resource);
+        }
+        zipOutputStream.close();
+    }
+
+    public byte[] getFileResource(String url) {
+        try {
+            byte[] resource = new byte[0];
+            if (properties.getFdfs() != null) {
+                resource = httpUtils.getFdfsResource(url);
+            } else if (properties.getMinio() != null) {
+                resource = httpUtils.getMinioResource(url);
+            }
+            return resource;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return "null".getBytes();
+        }
+    }
+
     private void downloadFdfsFile(HttpServletResponse response, Map<String, String> map) throws IOException {
         ArrayList<String> names = new ArrayList<>(map.keySet());
         // 压缩文件的压缩文件输出流
@@ -65,7 +94,7 @@ public class FileUtils {
         } else {
             //正常下载单个文件
             final ServletOutputStream outputStream = response.getOutputStream();
-            byte[] resource = httpUtils.getFdfsResource(map.get(names.get(0)));
+            byte[] resource = getFileResource(map.get(names.get(0)));
             IOUtils.write(resource, outputStream);
         }
     }
@@ -110,21 +139,6 @@ public class FileUtils {
         return extName;
     }
 
-    private void zipFile(HttpServletResponse response, Map<String, String> map, ArrayList<String> names) throws IOException {
-        ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
-        for (final String name : names) {
-            final String url = map.get(name);
-            try {
-                byte[] resource = httpUtils.getFdfsResource(url);
-                ZipEntry zipEntry = new ZipEntry(name);
-                zipOutputStream.putNextEntry(zipEntry);
-                zipOutputStream.write(resource);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        zipOutputStream.close();
-    }
 
     private static String buildNewFileName(String filename, Integer order) {
         return new StringBuffer().append(filename).

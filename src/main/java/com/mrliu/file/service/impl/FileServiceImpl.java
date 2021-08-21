@@ -65,7 +65,8 @@ public class FileServiceImpl implements FileService {
                 final FileInfoEntity infoEntity = fileinfoMapper.selectByPrimaryKey(id);
                 fileInfoEntities.add(infoEntity);
             }
-            fileUtils.downloadFdfsFile(response, fileInfoEntities);
+            //真正下载文件的逻辑
+            fileUtils.downloadFile(response, fileInfoEntities);
         } catch (IOException e) {
             e.printStackTrace();
 
