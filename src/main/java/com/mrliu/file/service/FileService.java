@@ -29,4 +29,6 @@ public interface FileService {
      */
     void download(HttpServletResponse response, String[] ids);
 
+    Integer saveFileInfo(FileInfoEntity fileInfoEntity);
+
 }

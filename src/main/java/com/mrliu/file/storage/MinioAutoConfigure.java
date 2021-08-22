@@ -74,6 +74,7 @@ public class MinioAutoConfigure {
                 fileInfoEntity.setUrl(bucketName+path+fileName);
                 fileInfoEntity.setFileStorageType(FileStorageType.MINIO);
                 fileInfoEntity.setFileName(fileName);
+
                 fileInfoEntity.setBucketName(bucketName);
             } catch (Exception e) {
                 log.error(e.getMessage());

@@ -30,15 +30,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileInfoEntity uploadFile(MultipartFile multipartFile) {
-        final FileInfoEntity infoEntity = fileStrategy.upload(multipartFile);
-        infoEntity.setId(UUID.randomUUID().toString());
-        System.out.println(infoEntity);
-        final int i = fileinfoMapper.insertSelective(infoEntity);
-        if (i > 0) {
-            return infoEntity;
-        } else {
-            return null;
-        }
+        return fileStrategy.upload(multipartFile);
     }
 
     @Override
@@ -71,5 +63,10 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
 
         }
+    }
+
+    @Override
+    public Integer saveFileInfo(FileInfoEntity fileInfoEntity) {
+        return fileinfoMapper.insertSelective(fileInfoEntity);
     }
 }

@@ -31,6 +31,10 @@ public class FileServerProperties {
         return innerUriPrefix;
     }
 
+    //分片上传时临时目录
+    private String storagePath = "folder";
+
+
     private Properties local;
     private Properties fdfs;
     private Properties minio;

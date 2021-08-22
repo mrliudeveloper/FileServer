@@ -64,4 +64,6 @@ public class FileInfoEntity extends BaseEntity {
 
     @Column(name = "FILE_SERVER_TYPE")
     private FileStorageType fileStorageType;
+    @Column(name = "MD5")
+    private String md5;
 }
