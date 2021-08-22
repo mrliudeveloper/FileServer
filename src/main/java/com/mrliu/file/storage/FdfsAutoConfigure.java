@@ -5,7 +5,7 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
 import com.mrliu.file.properties.FileServerProperties;
-import com.mrliu.file.strategy.AbstractFileStrategy;
+import com.mrliu.file.strategy.impl.AbstractFileStrategy;
 import com.mrliu.file.vo.FileDeleteVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,7 +1,8 @@
-package com.mrliu.file.strategy;
+package com.mrliu.file.strategy.impl;
 
 import com.mrliu.file.enumeration.FileStorageType;
 import com.mrliu.file.po.FileInfoEntity;
+import com.mrliu.file.strategy.FileStrategy;
 import com.mrliu.file.vo.FileDeleteVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
