@@ -117,6 +117,11 @@ public abstract class AbstractFileChunkStrategy implements FileChunkStrategy {
         return null;
     }
 
+    /**
+     * 清理本地文件
+     * @param folder 文件夹
+     * @param path 文件名
+     */
     public void cleanSpace(String folder, String path) {
         System.out.println(folder);
         System.out.println(path);

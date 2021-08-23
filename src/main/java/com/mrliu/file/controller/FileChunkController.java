@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
- * 分片上传
+ * fastDFS分片上传
  * @author Mr.Liu
  */
 @CrossOrigin
@@ -82,7 +82,6 @@ public class FileChunkController {
             return fileChunkMergeVo;
         }
     }
-
     @PostMapping("/merge")
     public FileInfoEntity mergeFile(FileChunkMergeVo fileChunkMergeVo)
     {

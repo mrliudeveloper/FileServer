@@ -12,35 +12,36 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 100MB
-      max-request-size: 1000MB
-#file:
-#  type: MINIO
-#  storagePath: D:/chunks
-#  minio:
-#    bucketName: file-server
-#    endpoint: http://localhost:9000/
-#    accessKeyId: minioadmin
-#    accessKeySecret: minioadmin
+      max-file-size: 500MB
+      max-request-size: 5000MB
 file:
-  type: FAST_DFS
+  type: MINIO
   storagePath: D:/chunks
-  uriPrefix: http://10.11.24.135:8888/
+  minio:
+    bucketName: file-server
+    endpoint: http://localhost:9000/
+    accessKeyId: minioadmin
+    accessKeySecret: minioadmin
+
+#file:
+#  type: FAST_DFS
+#  storagePath: D:/chunks
+#  uriPrefix: http://10.11.24.135:8888/
 
 #FAST_DFS配置
-fdfs:
-  soTimeout: 1500
-  connectTimeout: 600
-  thumb-image:
-    width: 150
-    height: 150
-  tracker-list:
-    - 10.11.24.135:22122
-  pool:
-    #从池中借出的对象的最大数目
-    max-total: 153
-    max-wait-millis: 102
-    jmx-name-base: 1
-    jmx-name-prefix: 1
+#fdfs:
+#  soTimeout: 1500
+#  connectTimeout: 600
+#  thumb-image:
+#    width: 150
+#    height: 150
+#  tracker-list:
+#    - 10.11.24.135:22122
+#  pool:
+#    #从池中借出的对象的最大数目
+#    max-total: 153
+#    max-wait-millis: 102
+#    jmx-name-base: 1
+#    jmx-name-prefix: 1
 
 
