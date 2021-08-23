@@ -571,7 +571,7 @@
                 console.log(response);
                 var data = {
                     name:response.name,
-                    submittedFileName:response.submittedFileName,
+                    originalFileName:response.originalFileName,
                     md5:response.md5,
                     chunks:response.chunks,
                     ext:response.ext,

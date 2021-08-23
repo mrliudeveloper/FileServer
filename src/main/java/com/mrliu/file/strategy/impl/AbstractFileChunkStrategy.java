@@ -37,7 +37,7 @@ public abstract class AbstractFileChunkStrategy implements FileChunkStrategy {
      * 分片合并处理主要流程
      *
      * @param fileChunkMergeVo 文件合并参数vo
-     * @return
+     * @return 文件详情
      */
     @Override
     public FileInfoEntity chunkMerge(FileChunkMergeVo fileChunkMergeVo) {
@@ -51,6 +51,7 @@ public abstract class AbstractFileChunkStrategy implements FileChunkStrategy {
             //文件信息保存到数据库
             //设置文件对象的属性，保存到数据库
             result.setId(UUID.randomUUID().toString());
+            result.setOriginalFileName(fileChunkMergeVo.getOriginalFileName());
             result.setIsDelete(false);
             result.setFileSize(fileChunkMergeVo.getSize());
             result.setMd5(fileChunkMergeVo.getMd5());
@@ -130,17 +131,14 @@ public abstract class AbstractFileChunkStrategy implements FileChunkStrategy {
     /**
      * 获取指定文件夹下文件数量
      *
-     * @param path
-     * @return
+     * @param path 临时存储路径
+     * @return 文件数量
      */
     public int getChunksNum(String path) {
         System.out.println(path);
         File folder = new File(path);
         File[] files = folder.listFiles((file) -> {
-            if (file.isDirectory()) {
-                return false;
-            }
-            return true;
+            return !file.isDirectory();
         });
         return files.length;
     }
@@ -149,7 +147,7 @@ public abstract class AbstractFileChunkStrategy implements FileChunkStrategy {
      * 获取指定目录的文件
      *
      * @param path 路径
-     * @return
+     * @return 文件列表
      */
     public List<File> getChunks(String path) {
         File folder = new File(path);
@@ -165,10 +163,10 @@ public abstract class AbstractFileChunkStrategy implements FileChunkStrategy {
     /**
      * 分片合并抽象方法
      *
-     * @param files
-     * @param fileName
-     * @param fileChunkMergeVo
-     * @return
+     * @param files 文件分片列表
+     * @param fileName 文件分片名称
+     * @param fileChunkMergeVo 文件分片信息
+     * @return 文件详情信息
      */
     protected abstract FileInfoEntity merge(List<File> files, String fileName, FileChunkMergeVo fileChunkMergeVo) throws IOException;
 }
