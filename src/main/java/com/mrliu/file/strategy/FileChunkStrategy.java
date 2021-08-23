@@ -5,6 +5,7 @@ import com.mrliu.file.vo.FileChunkMergeVo;
 
 /**
  * 最高层的文件分片处理策略接口
+ * @author Mr.Liu
  */
 public interface FileChunkStrategy {
     /**

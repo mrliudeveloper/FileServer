@@ -2,6 +2,9 @@ package com.mrliu.file.vo;
 
 import lombok.Data;
 
+/**
+ * @author Mr.Liu
+ */
 @Data
 public class FileChunkMergeVo {
     //文件唯一名

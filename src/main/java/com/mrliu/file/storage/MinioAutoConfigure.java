@@ -57,13 +57,13 @@ public class MinioAutoConfigure {
                     minioClient.makeBucket(bucketName);
                 }
                 final String path = getRelativePath();
-                fileInfoEntity.setRelativePath(bucketName+path+fileName);
+                fileInfoEntity.setRelativePath(bucketName + path + fileName);
                 minioClient.putObject(PutObjectArgs.builder()
                         .bucket(bucketName)
                         .object(path + fileName)
                         .stream(multipartFile.getInputStream(), multipartFile.getSize(), 1024 * 1024 * 100L)
                         .build());
-                fileInfoEntity.setUrl(bucketName+path+fileName);
+                fileInfoEntity.setUrl(bucketName + path + fileName);
                 fileInfoEntity.setFileStorageType(FileStorageType.MINIO);
                 fileInfoEntity.setFileName(fileName);
 

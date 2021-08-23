@@ -10,6 +10,8 @@ import java.io.IOException;
 
 /**
  * 封装分片操作的工具类
+ *
+ * @author Mr.Liu
  */
 @Slf4j
 @Component
@@ -18,12 +20,12 @@ public class WebUploader {
      * 为分片上传创建对应的保存位置，同时还可以创建临时文件
      *
      * @param fileUploadVo 文件上传信息
-     * @param path 需要创建的路径
+     * @param path         需要创建的路径
      * @return 文件实体
      */
     public File getReadySpace(FileUploadVo fileUploadVo, String path) {
-        System.out.println(fileUploadVo);
-        System.out.println(path);
+        log.debug("上传的文件信息: " + fileUploadVo.toString());
+        log.debug("上传的文件路径: " + path);
         boolean b = createFileFolder(path, false);
         if (!b) {
             return null;
@@ -36,18 +38,18 @@ public class WebUploader {
         path += "/" + fileFolder;
         //创建临时文件和存放分片的目录
         b = createFileFolder(path, true);
-        if (!b){
-            return  null;
+        if (!b) {
+            return null;
         }
         //构造需要上传的分片文件对应的路径
         String s = String.valueOf(fileUploadVo.getChunk());
-        return new File(path,s);
+        return new File(path, s);
     }
 
     /**
      * 具体执行创建分片所在的目录和临时文件
      *
-     * @param file 文件路径
+     * @param file   文件路径
      * @param hasTmp 是否需要创建临时文件
      * @return 创建是否成功
      */
